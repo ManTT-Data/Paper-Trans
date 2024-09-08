@@ -101,7 +101,7 @@ async def get():
 
                 // Gửi request đến FastAPI server
                 try {
-                    const response = await fetch("/upload", {
+                    const response = await fetch("/upload_pdf", {
                         method: "POST",
                         body: formData,
                     });
