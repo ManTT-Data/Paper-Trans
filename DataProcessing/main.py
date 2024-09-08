@@ -8,7 +8,6 @@ from uuid import uuid4
 
 app = FastAPI()
 
-# Khởi tạo Firebase Admin SDK với key JSON
 cred = credentials.Certificate("./cred.json")
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'paper-trans-3e6b8.appspot.com'
@@ -126,21 +125,19 @@ async def get():
     """
     return HTMLResponse(content=html_content)
 
-# Hàm upload file PDF lên Firebase Storage
+
 @app.post("/upload")
 async def upload_pdf(file: UploadFile = File(...)):
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="File không phải PDF")
     
-    # Tạo tên file duy nhất
     file_name = f"{uuid4()}.pdf"
 
-    # Tải file lên Firebase Storage
     bucket = storage.bucket()
     blob = bucket.blob(file_name)
     
     blob.upload_from_file(file.file, content_type="application/pdf")
-    blob.make_public()  # Đặt file ở chế độ public để có thể truy cập
+    blob.make_public()  
 
     file_url = blob.public_url
     return {"file_url": file_url}
