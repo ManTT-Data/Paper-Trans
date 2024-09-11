@@ -1,3 +1,0 @@
-fastapi
-firebase_admin
-uvicorn
